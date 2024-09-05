@@ -1,4 +1,6 @@
 import pygame
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 from constants import *
 from player import Player
 
@@ -12,7 +14,19 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    # Sprite Groups
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    # Sprites
+    Player.containers = (updatable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = updatable
+    asteroid_field = AsteroidField()
 
     while True:
         # Listen for close game windoe event
@@ -20,12 +34,16 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        # Update player position
-        player.update(dt)
+        # Update Objects
+        for obj in updatable:
+            obj.update(dt)
 
-        # Objects to draw to screen
+        # Paint blackground blacl
         screen.fill("black")
-        player.draw(screen)
+
+        # Draw Objects
+        for obj in drawable:
+            obj.draw(screen)
 
         # Updates the actual screen
         pygame.display.flip()
