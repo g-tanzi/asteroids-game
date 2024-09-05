@@ -20,11 +20,17 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
+        # Update player position
+        player.update(dt)
+
+        # Objects to draw to screen
         screen.fill("black")
         player.draw(screen)
 
         # Updates the actual screen
         pygame.display.flip()
+
+        # Limits Framerate to 60 FPS
         dt = clock.tick(60) / 1000
 
 
